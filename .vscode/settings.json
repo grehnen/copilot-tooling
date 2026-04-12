@@ -1,0 +1,10 @@
+{
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "file": ".agents/skills/gitmoji/SKILL.md"
+    },
+    {
+      "file": ".agents/skills/gitmoji/references/gitmojis.md"
+    }
+  ],
+}

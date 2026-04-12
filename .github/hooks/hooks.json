@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "bun .github/hooks/scripts/src/lint-format.mjs",
+        "timeout": 30,
+        "env": {}
+      }
+    ]
+  }
+}
