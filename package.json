@@ -3,6 +3,8 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "skills-patch": "bun scripts/skills-patch.ts",
+    "update-gitmoji": "bun scripts/update-gitmojis.ts && bun skills-patch apply gitmoji",
     "skills-patch": "bun scripts/skills-patch.ts"
   },
   "devDependencies": {
