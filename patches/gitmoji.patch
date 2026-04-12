@@ -1,0 +1,9 @@
+diff --git a/.agents/skills/gitmoji/references/gitmojis.md b/.agents/skills/gitmoji/references/gitmojis.md
+index 5be21c7..b7d5678 100644
+--- a/.agents/skills/gitmoji/references/gitmojis.md
++++ b/.agents/skills/gitmoji/references/gitmojis.md
+@@ -79,3 +79,4 @@ Full list of all gitmoji with emoji character and description.
+ | 🦺 | Add or update code related to validation. |
+ | ✈️ | Improve offline support. |
+ | 🦖 | Code that adds backwards compatibility. |
++| 🤖 | Add or update agent instructions, skills, prompts or other tooling. |

@@ -79,3 +79,4 @@ Full list of all gitmoji with emoji character and description.
 | 🦺 | Add or update code related to validation. |
 | ✈️ | Improve offline support. |
 | 🦖 | Code that adds backwards compatibility. |
+| 🤖 | Add or update agent instructions, skills, prompts or other tooling. |
