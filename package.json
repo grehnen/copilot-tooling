@@ -1,20 +1,22 @@
 {
   "name": "copilot-tooling",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
     "skills-patch": "bun scripts/skills-patch.ts",
     "update-gitmoji": "bun scripts/update-gitmojis.ts && bun skills-patch apply gitmoji",
-    "skills-patch": "bun scripts/skills-patch.ts"
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt"
+  },
+  "dependencies": {
+    "oxfmt": "0.44.0",
+    "oxlint": "1.59.0"
   },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "6.0.2"
-  },
-  "dependencies": {
-    "oxfmt": "0.44.0",
-    "oxlint": "1.59.0"
   }
 }

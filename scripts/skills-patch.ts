@@ -12,24 +12,24 @@
  * so they survive upstream skill updates and re-installs.
  */
 
-import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, unlinkSync } from "node:fs";
-import { basename, join } from "node:path";
+import { spawnSync } from 'node:child_process';
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, unlinkSync } from 'node:fs';
+import { basename, join } from 'node:path';
 
 // ── repo root ────────────────────────────────────────────────────────────────
 
 function findRepoRoot(): string {
-  const result = spawnSync("git", ["rev-parse", "--show-toplevel"], {
-    encoding: "utf8",
+  const result = spawnSync('git', ['rev-parse', '--show-toplevel'], {
+    encoding: 'utf8',
     cwd: import.meta.dir,
   });
-  if (result.status !== 0) die("Not inside a git repository.");
+  if (result.status !== 0) die('Not inside a git repository.');
   return result.stdout.trim();
 }
 
 const REPO_ROOT = findRepoRoot();
-const PATCHES_DIR = join(REPO_ROOT, "patches");
-const SKILLS_DIR = join(REPO_ROOT, ".agents", "skills");
+const PATCHES_DIR = join(REPO_ROOT, 'patches');
+const SKILLS_DIR = join(REPO_ROOT, '.agents', 'skills');
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -52,39 +52,38 @@ function requireSkill(skill: string): void {
 function listPatches(): string[] {
   if (!existsSync(PATCHES_DIR)) return [];
   return readdirSync(PATCHES_DIR)
-    .filter((f) => f.endsWith(".patch"))
+    .filter((f) => f.endsWith('.patch'))
     .sort()
     .map((f) => join(PATCHES_DIR, f));
 }
 
 function changedLines(patchPath: string): number {
-  const content = readFileSync(patchPath, "utf8");
-  return content.split("\n").filter((l) => l.startsWith("+") || l.startsWith("-")).length;
+  const content = readFileSync(patchPath, 'utf8');
+  return content.split('\n').filter((l) => l.startsWith('+') || l.startsWith('-')).length;
 }
 
 function runPatch(args: string[], stdin: string): { success: boolean; output: string } {
-  const result = spawnSync("patch", args, {
+  const result = spawnSync('patch', args, {
     input: stdin,
-    encoding: "utf8",
+    encoding: 'utf8',
     cwd: REPO_ROOT,
   });
-  const output = (result.stdout ?? "") + (result.stderr ?? "");
+  const output = (result.stdout ?? '') + (result.stderr ?? '');
   return { success: result.status === 0, output };
 }
 
 // ── commands ─────────────────────────────────────────────────────────────────
 
 function cmdCreate(skill: string | undefined): void {
-  if (!skill) die("Usage: skills-patch create <skill-name>");
+  if (!skill) die('Usage: skills-patch create <skill-name>');
   requireSkill(skill);
 
   const skillPath = `.agents/skills/${skill}`; // repo-root-relative, for git diff
 
-  const result = spawnSync(
-    "git",
-    ["diff", "HEAD", "--", skillPath],
-    { encoding: "utf8", cwd: REPO_ROOT }
-  );
+  const result = spawnSync('git', ['diff', 'HEAD', '--', skillPath], {
+    encoding: 'utf8',
+    cwd: REPO_ROOT,
+  });
 
   const diff = result.stdout.trim();
   if (!diff) {
@@ -95,13 +94,15 @@ function cmdCreate(skill: string | undefined): void {
 
   mkdirSync(PATCHES_DIR, { recursive: true });
   const patchFile = patchFileFor(skill);
-  Bun.write(patchFile, diff + "\n");
+  Bun.write(patchFile, diff + '\n');
 
-  const lines = diff.split("\n").filter((l) => l.startsWith("+") || l.startsWith("-")).length;
+  const lines = diff.split('\n').filter((l) => l.startsWith('+') || l.startsWith('-')).length;
   console.log(`Created: ${patchFile}`);
   console.log(`  ${lines} changed lines`);
   console.log();
-  console.log("Next: commit the patch file, then run 'skills-patch apply' after any skills update.");
+  console.log(
+    "Next: commit the patch file, then run 'skills-patch apply' after any skills update.",
+  );
 }
 
 function cmdApply(targetSkill: string | undefined): void {
@@ -122,20 +123,30 @@ function cmdApply(targetSkill: string | undefined): void {
   let failed = 0;
 
   for (const pf of patches) {
-    const skillName = basename(pf, ".patch");
+    const skillName = basename(pf, '.patch');
     const rejFile = join(PATCHES_DIR, `${skillName}.rej`);
-    const patchContent = readFileSync(pf, "utf8");
+    const patchContent = readFileSync(pf, 'utf8');
 
     console.log(`Applying: ${skillName}`);
 
     // --forward: idempotent — skip already-applied patches
     // --fuzz=3:  tolerate minor context drift from upstream updates
     const { success, output } = runPatch(
-      ["--forward", "--strip=1", `--fuzz=3`, `--reject-file=${rejFile}`, `--directory=${REPO_ROOT}`],
-      patchContent
+      [
+        '--forward',
+        '--strip=1',
+        `--fuzz=3`,
+        `--reject-file=${rejFile}`,
+        `--directory=${REPO_ROOT}`,
+      ],
+      patchContent,
     );
 
-    const indented = output.trimEnd().split("\n").map((l) => `  ${l}`).join("\n");
+    const indented = output
+      .trimEnd()
+      .split('\n')
+      .map((l) => `  ${l}`)
+      .join('\n');
     if (indented) console.log(indented);
 
     if (success) {
@@ -161,7 +172,7 @@ function cmdList(): void {
     return;
   }
   for (const pf of patches) {
-    const skillName = basename(pf, ".patch");
+    const skillName = basename(pf, '.patch');
     const lines = changedLines(pf);
     console.log(`  ${skillName.padEnd(30)} ${lines} lines changed`);
   }
@@ -170,17 +181,17 @@ function cmdList(): void {
 function cmdStatus(): void {
   const patches = listPatches();
   if (patches.length === 0) {
-    console.log("No patches found.");
+    console.log('No patches found.');
     return;
   }
 
   for (const pf of patches) {
-    const skillName = basename(pf, ".patch");
-    const patchContent = readFileSync(pf, "utf8");
+    const skillName = basename(pf, '.patch');
+    const patchContent = readFileSync(pf, 'utf8');
 
     const dryRun = runPatch(
-      ["--dry-run", "--forward", "--strip=1", "--fuzz=3", `--directory=${REPO_ROOT}`],
-      patchContent
+      ['--dry-run', '--forward', '--strip=1', '--fuzz=3', `--directory=${REPO_ROOT}`],
+      patchContent,
     );
 
     if (dryRun.success) {
@@ -189,8 +200,8 @@ function cmdStatus(): void {
     }
 
     const reverse = runPatch(
-      ["--dry-run", "--reverse", "--strip=1", "--fuzz=3", `--directory=${REPO_ROOT}`],
-      patchContent
+      ['--dry-run', '--reverse', '--strip=1', '--fuzz=3', `--directory=${REPO_ROOT}`],
+      patchContent,
     );
 
     if (reverse.success) {
@@ -226,9 +237,19 @@ and adjust patches/<name>.patch manually, then re-run 'skills-patch apply'.`);
 const [cmd, arg] = process.argv.slice(2);
 
 switch (cmd) {
-  case "create": cmdCreate(arg); break;
-  case "apply":  cmdApply(arg);  break;
-  case "list":   cmdList();      break;
-  case "status": cmdStatus();    break;
-  default:       printHelp();    process.exit(cmd ? 1 : 0);
+  case 'create':
+    cmdCreate(arg);
+    break;
+  case 'apply':
+    cmdApply(arg);
+    break;
+  case 'list':
+    cmdList();
+    break;
+  case 'status':
+    cmdStatus();
+    break;
+  default:
+    printHelp();
+    process.exit(cmd ? 1 : 0);
 }

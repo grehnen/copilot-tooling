@@ -1,7 +1,7 @@
 import { defineConfig } from 'oxfmt';
 
 export default defineConfig({
-  ignorePatterns: [],
+  ignorePatterns: ['.agents/'],
   singleQuote: true,
   jsxSingleQuote: true,
 });
