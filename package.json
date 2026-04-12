@@ -2,6 +2,9 @@
   "name": "copilot-tooling",
   "type": "module",
   "private": true,
+  "scripts": {
+    "skills-patch": "bun scripts/skills-patch.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
