@@ -13,8 +13,10 @@ When this skill applies, create a complete HTML document that:
 
 - Uses this exact stylesheet in the `<head>`:
   `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">`
+- Defaults to dark mode
 - Presents the content as slides, not a long scrolling page
 - Saves the file in `.agents/output/`
+- Includes a sidebar page-index listing every slide title
 - Keeps everything in a single file unless the user asks for extra assets
 - Adds only minimal inline CSS or JavaScript for layout, navigation, or print behavior
 
@@ -24,15 +26,18 @@ When this skill applies, create a complete HTML document that:
 
 - Start with a title slide
 - Keep each slide focused on one idea
+- Give each slide a clear title that can also appear in the page-index
 - Split dense content across multiple slides instead of overflowing one slide
 - Add a closing or summary slide when it helps the presentation
 
 ### 2. Build the HTML deck
 
 - Return a full `<!doctype html>` document
+- Set the document to dark mode, for example with `data-theme="dark"` on `<html>`
 - Use semantic HTML with clear headings for each slide
+- Add a sidebar with a `page-index` that links to each slide using the slide title
 - Represent each slide with a sectioning element such as `<section>` or `<article>`
-- Layer only lightweight custom styles on top of Pico CSS
+- Keep layered minimal custom styles on top of Pico CSS to a bare minimum required for layout and navigation.
 
 ### 3. Keep the deck portable
 
@@ -46,9 +51,11 @@ When this skill applies, create a complete HTML document that:
 - Place the output file in `.agents/output/`
 - Use Pico CSS via:
   `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">`
+- Default the deck to dark mode
+- Include a sidebar `page-index` with the title of each slide
 - Treat the response as a slide deck, not a generic HTML page
 - Include navigation, speaker notes, or print styling only when useful or requested
 
 ## Reference
 
-See [REFERENCE.md](REFERENCE.md) for a minimal starter template and file-placement guidance.
+See [REFERENCE.md](REFERENCE.md) for a starter template, dark-mode defaults, and page-index layout guidance.
