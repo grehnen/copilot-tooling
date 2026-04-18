@@ -5,7 +5,7 @@ description: Presents results as a single-file HTML slide deck styled with Pico 
 
 # HTML Output
 
-Format the deliverable as one self-contained HTML file that renders as a slide deck. Do not return Markdown, PDF, or split assets unless the user explicitly asks for them.
+Produce a single self-contained HTML slide deck and save it in `.agents/output/`. Do not default to Markdown, PDF, or split assets unless the user explicitly asks for them.
 
 ## Quick start
 
@@ -14,6 +14,7 @@ When this skill applies, create a complete HTML document that:
 - Uses this exact stylesheet in the `<head>`:
   `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">`
 - Presents the content as slides, not a long scrolling page
+- Saves the file in `.agents/output/`
 - Keeps everything in a single file unless the user asks for extra assets
 - Adds only minimal inline CSS or JavaScript for layout, navigation, or print behavior
 
@@ -42,29 +43,12 @@ When this skill applies, create a complete HTML document that:
 ## Output rules
 
 - Deliver exactly one HTML file unless the user asks for more
+- Place the output file in `.agents/output/`
 - Use Pico CSS via:
   `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">`
 - Treat the response as a slide deck, not a generic HTML page
 - Include navigation, speaker notes, or print styling only when useful or requested
 
-## Minimal template
+## Reference
 
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Slide Deck</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
-  </head>
-  <body>
-    <main class="container">
-      <section>
-        <h1>Title</h1>
-        <p>Subtitle or summary</p>
-      </section>
-    </main>
-  </body>
-</html>
-```
+See [REFERENCE.md](REFERENCE.md) for a minimal starter template and file-placement guidance.
