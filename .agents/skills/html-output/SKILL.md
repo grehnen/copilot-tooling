@@ -5,57 +5,22 @@ description: Presents results as a single-file HTML slide deck styled with Pico 
 
 # HTML Output
 
-Produce a single self-contained HTML slide deck and save it in `.agents/output/`. Do not default to Markdown, PDF, or split assets unless the user explicitly asks for them.
+Produce a single self-contained HTML slide deck in `.agents/output/`. Default to one HTML file with no build step or extra assets unless the user explicitly asks for them.
 
-## Quick start
+## Requirements
 
-When this skill applies, create a complete HTML document that:
-
-- Uses this exact stylesheet in the `<head>`:
+- Return a full `<!doctype html>` document
+- Use this exact Pico CSS stylesheet in the `<head>`:
   `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">`
-- Defaults to dark mode
-- Presents the content as slides, not a long scrolling page
-- Saves the file in `.agents/output/`
-- Includes a sidebar page-index listing every slide title
-- Keeps everything in a single file unless the user asks for extra assets
-- Adds only minimal inline CSS or JavaScript for layout, navigation, or print behavior
+- Default to dark mode with `data-theme="dark"` on `<html>`
+- Treat the document as a slide deck, not a generic long page
+- Use semantic slide sections and a sidebar `#page-index` with one link per slide
+- Keep the current slide highlighted in the sidebar
+- Support keyboard navigation: Up/Right goes to the next slide, Down/Left goes to the previous slide
+- Keep inline CSS and JavaScript minimal and limited to layout, navigation, or print behavior
 
 ## Workflow
 
-### 1. Shape the content into slides
-
-- Start with a title slide
-- Keep each slide focused on one idea
-- Give each slide a clear title that can also appear in the page-index
-- Split dense content across multiple slides instead of overflowing one slide
-- Add a closing or summary slide when it helps the presentation
-
-### 2. Build the HTML deck
-
-- Return a full `<!doctype html>` document
-- Set the document to dark mode, for example with `data-theme="dark"` on `<html>`
-- Use semantic HTML with clear headings for each slide
-- Add a sidebar with a `page-index` that links to each slide using the slide title
-- Represent each slide with a sectioning element such as `<section>` or `<article>`
-- Keep layered minimal custom styles on top of Pico CSS to a bare minimum required for layout and navigation.
-
-### 3. Keep the deck portable
-
-- Do not require a build step
-- Do not introduce extra dependencies beyond Pico CSS unless the user explicitly asks
-- Prefer embedded content over separate files
-
-## Output rules
-
-- Deliver exactly one HTML file unless the user asks for more
-- Place the output file in `.agents/output/`
-- Use Pico CSS via:
-  `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">`
-- Default the deck to dark mode
-- Include a sidebar `page-index` with the title of each slide
-- Treat the response as a slide deck, not a generic HTML page
-- Include navigation, speaker notes, or print styling only when useful or requested
-
-## Reference
-
-See [REFERENCE.md](REFERENCE.md) for a starter template, dark-mode defaults, and page-index layout guidance.
+1. Shape the content into focused slides: start with a title slide, keep one idea per slide, split dense material across slides, and add a closing slide when it helps.
+2. Start from [TEMPLATE.html](TEMPLATE.html) and replace the placeholder content instead of rebuilding the shell from scratch.
+3. Save the final deck in `.agents/output/` with a descriptive filename such as `feature-slide-deck.html`.

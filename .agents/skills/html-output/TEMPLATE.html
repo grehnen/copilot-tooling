@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{deck-title}}</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <style>
+      :root {
+        --page-index-active-bg: rgba(255, 255, 255, 0.14);
+        --page-index-active-border: rgba(255, 255, 255, 0.5);
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .deck-layout {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: 18rem minmax(0, 1fr);
+        min-height: 100vh;
+        padding: 1.5rem;
+      }
+
+      #page-index {
+        position: sticky;
+        top: 1.5rem;
+        align-self: start;
+        max-height: calc(100vh - 3rem);
+        overflow: auto;
+      }
+
+      #page-index ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .page-index-link {
+        border-left: 0.25rem solid transparent;
+        border-radius: 0.5rem;
+        display: block;
+        padding: 0.6rem 0.75rem;
+        text-decoration: none;
+        transition:
+          background-color 160ms ease,
+          border-color 160ms ease,
+          color 160ms ease;
+      }
+
+      .page-index-link.active {
+        background: var(--page-index-active-bg);
+        border-left-color: var(--page-index-active-border);
+        font-weight: 600;
+      }
+
+      .slides {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .slide {
+        min-height: 85vh;
+        scroll-margin-top: 1.5rem;
+      }
+
+      @media (max-width: 960px) {
+        .deck-layout {
+          grid-template-columns: 1fr;
+        }
+
+        #page-index {
+          position: static;
+          max-height: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck-layout">
+      <aside id="page-index">
+        <nav>
+          <ul>
+            <li><a class="page-index-link" href="#slide-1">{{deck-title}}</a></li>
+            <li><a class="page-index-link" href="#slide-2">{{slide-2-title}}</a></li>
+            <li><a class="page-index-link" href="#slide-3">{{slide-3-title}}</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="slides">
+        <section class="slide" id="slide-1">
+          <h1>{{deck-title}}</h1>
+          <p>{{deck-subtitle-or-summary}}</p>
+        </section>
+
+        <section class="slide" id="slide-2">
+          <h2>{{slide-2-title}}</h2>
+          <p>{{slide-2-content}}</p>
+        </section>
+
+        <section class="slide" id="slide-3">
+          <h2>{{slide-3-title}}</h2>
+          <p>{{slide-3-content}}</p>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const pageIndexLinks = Array.from(
+        document.querySelectorAll('#page-index a[href^="#"]'),
+      );
+      const slideIds = slides.map((slide) => slide.id);
+
+      let currentSlideId =
+        slideIds.find((slideId) => `#${slideId}` === window.location.hash) ??
+        slideIds[0];
+
+      function updatePageIndex(activeSlideId) {
+        currentSlideId = activeSlideId;
+
+        for (const link of pageIndexLinks) {
+          const isActive = link.getAttribute('href') === `#${activeSlideId}`;
+          link.classList.toggle('active', isActive);
+
+          if (isActive) {
+            link.setAttribute('aria-current', 'true');
+          } else {
+            link.removeAttribute('aria-current');
+          }
+        }
+      }
+
+      function scrollToSlide(nextSlideId) {
+        const slide = document.getElementById(nextSlideId);
+
+        if (!slide) {
+          return;
+        }
+
+        slide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.history.replaceState(null, '', `#${nextSlideId}`);
+        updatePageIndex(nextSlideId);
+      }
+
+      function goToRelativeSlide(direction) {
+        const currentIndex = Math.max(slideIds.indexOf(currentSlideId), 0);
+        const nextIndex = Math.min(
+          Math.max(currentIndex + direction, 0),
+          slideIds.length - 1,
+        );
+
+        if (nextIndex !== currentIndex) {
+          scrollToSlide(slideIds[nextIndex]);
+        }
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visibleEntries = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort(
+              (left, right) => right.intersectionRatio - left.intersectionRatio,
+            );
+
+          if (visibleEntries.length > 0) {
+            const activeSlideId = visibleEntries[0].target.id;
+            window.history.replaceState(null, '', `#${activeSlideId}`);
+            updatePageIndex(activeSlideId);
+          }
+        },
+        {
+          rootMargin: '-20% 0px -45% 0px',
+          threshold: [0.25, 0.5, 0.75],
+        },
+      );
+
+      for (const slide of slides) {
+        observer.observe(slide);
+      }
+
+      document.addEventListener('keydown', (event) => {
+        const interactiveSelector =
+          'input, textarea, select, button, [contenteditable="true"]';
+
+        if (
+          event.target instanceof Element &&
+          event.target.closest(interactiveSelector)
+        ) {
+          return;
+        }
+
+        if (event.key === 'ArrowUp' || event.key === 'ArrowRight') {
+          event.preventDefault();
+          goToRelativeSlide(1);
+        }
+
+        if (event.key === 'ArrowDown' || event.key === 'ArrowLeft') {
+          event.preventDefault();
+          goToRelativeSlide(-1);
+        }
+      });
+
+      window.addEventListener('hashchange', () => {
+        const nextSlideId = window.location.hash.slice(1);
+
+        if (slideIds.includes(nextSlideId)) {
+          updatePageIndex(nextSlideId);
+        }
+      });
+
+      updatePageIndex(currentSlideId);
+    </script>
+  </body>
+</html>
