@@ -5,6 +5,7 @@
   "scripts": {
     "skills-patch": "bun scripts/skills-patch.ts",
     "update-gitmoji": "bun scripts/update-gitmojis.ts && bun skills-patch apply gitmoji",
+    "postinstall": "bun run update-gitmoji && bun run skills-patch apply",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "oxfmt"

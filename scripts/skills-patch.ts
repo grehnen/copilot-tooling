@@ -141,6 +141,7 @@ function cmdApply(targetSkill: string | undefined): void {
       ],
       patchContent,
     );
+    const alreadyApplied = output.includes('Reversed (or previously applied) patch detected!');
 
     const indented = output
       .trimEnd()
@@ -149,11 +150,18 @@ function cmdApply(targetSkill: string | undefined): void {
       .join('\n');
     if (indented) console.log(indented);
 
-    if (success) {
-      console.log(`  ✓ ${skillName}`);
+    if (success || alreadyApplied) {
+      if (alreadyApplied && !success) {
+        console.log(`  ~ ${skillName} (already applied)`);
+      } else {
+        console.log(`  ✓ ${skillName}`);
+      }
+
+      // `patch --forward` may still leave a reject file behind when it skips
+      // hunks because the patch is already present.
+      if (existsSync(rejFile)) unlinkSync(rejFile);
+
       ok++;
-      // Remove empty reject file on success
-      if (existsSync(rejFile) && statSync(rejFile).size === 0) unlinkSync(rejFile);
     } else {
       console.error(`  ✗ ${skillName} — check ${rejFile} for failed hunks`);
       failed++;
