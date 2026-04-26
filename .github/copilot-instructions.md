@@ -2,13 +2,19 @@
 
 {{One-sentence description of what the project does, who uses it, and how.}}
 
-## General Principles
+## Overall Principles (Very Important)
 
-- Always prefer asking the user for input and clarification over making assumptions.
+- ALWAYS prefer asking the user for input and clarification over making assumptions.
 - ALWAYS use the question-tool (vscode/askQuestions) when asking the user questions, and always provide your recommended answer.
-- Always select the appropriate skill for a specific task. Be sure to ALWAYS explicitly write in the chat when a skill is currently being used.
-- Follow best practices for code quality, readability, and maintainability. Use descriptive variable and function names, write modular code, and use comments only when necessary, such as when explaining complex logic or decisions.
-- Avoid writing duplicated code and instead create reusable functions or components. If you find yourself writing the same code more than once, consider refactoring it into a shared utility or component.
+- ALWAYS select the appropriate skill for a specific task.
+
+## Code Style
+
+- Follow best practices for code quality, readability, and maintainability.
+- Avoid writing duplicated code and instead create reusable functions and utility components. Try to reuse existing code whenever possible.
+- Prefer separating the code into smaller, focused files.
+- Use descriptive variable and function names. Use comments only when necessary, such as when explaining complex logic or decisions.
+- The project is in early development, so breaking changes are completely fine.
 
 ## Tech Stack
 
