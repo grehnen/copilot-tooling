@@ -10,7 +10,7 @@
 ## Language
 
 **Order**:
-A customer's request to purchase one or more items.
+{A concise description of the term}
 _Avoid_: Purchase, transaction
 
 **Invoice**:

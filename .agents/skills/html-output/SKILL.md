@@ -23,4 +23,4 @@ Produce a single self-contained HTML slide deck in `.agents/output/`. Default to
 
 1. Shape the content into focused slides: start with a title slide, keep one idea per slide, split dense material across slides, and add a closing slide when it helps.
 2. Start from [TEMPLATE.html](TEMPLATE.html) and replace the placeholder content instead of rebuilding the shell from scratch.
-3. Save the final deck in `.agents/output/` with a descriptive filename such as `feature-slide-deck.html`.
+3. Save the final deck in `docs/agents/output/` with a descriptive filename such as `feature-slide-deck.html`.

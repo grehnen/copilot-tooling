@@ -7,15 +7,28 @@
 - ALWAYS prefer asking the user for input and clarification over making assumptions.
 - ALWAYS use the question-tool (vscode/askQuestions) when asking the user questions, and always provide your recommended answer.
 - ALWAYS select the appropriate skill for a specific task.
-- Be EXTREMELY breif in your responses. Sacrificse grammar for brevity.
+- Be EXTREMELY brief in your responses. Sacrificse grammar for brevity.
 
 ## Code Style
 
-- Follow best practices for code quality, readability, and maintainability.
 - Avoid writing duplicated code and instead create reusable functions and utility components. Try to reuse existing code whenever possible.
 - Prefer separating the code into smaller, focused files.
 - Use descriptive variable and function names. Use comments only when necessary, such as when explaining complex logic or decisions.
 - The project is in early development, so breaking changes are completely fine.
+
+## Agent skills
+
+### Issue tracker
+
+Issues for this repo are tracked in GitHub Issues. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+This repo uses the canonical triage labels: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, and `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+This repo uses a single-context domain-doc layout. See `docs/agents/domain.md`.
 
 ## Tech Stack
 

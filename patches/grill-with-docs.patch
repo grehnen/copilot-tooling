@@ -1,8 +1,8 @@
-diff --git a/.agents/skills/domain-model/SKILL.md b/.agents/skills/domain-model/SKILL.md
-index bd04394..f1543a9 100644
---- a/.agents/skills/domain-model/SKILL.md
-+++ b/.agents/skills/domain-model/SKILL.md
-@@ -8,6 +8,4 @@ description: Grilling session that challenges your plan against the existing dom
+diff --git a/.agents/skills/grill-with-docs/SKILL.md b/.agents/skills/grill-with-docs/SKILL.md
+index 4b68b97..2f8e250 100644
+--- a/.agents/skills/grill-with-docs/SKILL.md
++++ b/.agents/skills/grill-with-docs/SKILL.md
+@@ -6,6 +6,4 @@ disable-model-invocation: true
  
  Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
  
