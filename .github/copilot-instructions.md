@@ -7,6 +7,7 @@
 - ALWAYS prefer asking the user for input and clarification over making assumptions.
 - ALWAYS use the question-tool (vscode/askQuestions) when asking the user questions, and always provide your recommended answer.
 - ALWAYS select the appropriate skill for a specific task.
+- Be EXTREMELY breif in your responses. Sacrificse grammar for brevity.
 
 ## Code Style
 
