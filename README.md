@@ -1,3 +1,9 @@
 # copilot-tooling
 
-A repo where I've collected copilot related tooling I use regularly across projects, such as skills, instructions and hooks. Some straight up copied from e.g. skills.sh, some are modified to my own preferences..
+> [!IMPORTANT]
+> This repo is archived and no longer maintained.
+
+It has been superseded by:
+
+- [grehnen/skills](https://github.com/grehnen/skills) for my own skills (`gitmoji`, `gh-body-editing`) and the gitmoji list updater.
+- [grehnen/dotfiles](https://github.com/grehnen/dotfiles) for the skills I install globally with the [`skills`](https://github.com/vercel-labs/skills) CLI.
